@@ -82,11 +82,11 @@ double Particle::GetEnergy() const {
   return std::sqrt(pow(GetMass(), 2) + pow(GetPNorm(), 2));
 }
 double Particle::InvMass(Particle const &other) {
-  double c = std::sqrt(pow((GetEnergy() + other.GetEnergy()), 2) -
-                       (pow((GetPx() + other.GetPx()), 2) +
-                        pow((GetPy() + other.GetPy()), 2) +
-                        pow((GetPz() + other.GetPz()), 2)));
-  std::cout << GetName() << other.GetName() << c << std::endl;
+  double c = std::sqrt(abs(pow((GetEnergy() + other.GetEnergy()), 2) -
+                           (pow((GetPx() + other.GetPx()), 2) +
+                            pow((GetPy() + other.GetPy()), 2) +
+                            pow((GetPz() + other.GetPz()), 2))));
+  // std::cout << GetName() << other.GetName() << c << std::endl;
   return c;
 }
 
@@ -100,10 +100,8 @@ int Particle::Decay2body(Particle &dau1, Particle &dau2) const {
   double massDau1 = dau1.GetMass();
   double massDau2 = dau2.GetMass();
 
-  if (index_ > -1) { // add width effect
-
-    // gaussian random numbers
-
+  if (index_ > -1) {
+    // std::cout << "1" << std::endl;
     float x1, x2, w, y1, y2;
 
     double invnum = 1. / RAND_MAX;
@@ -149,10 +147,9 @@ int Particle::Decay2body(Particle &dau1, Particle &dau2) const {
 
   dau1.Boost(bx, by, bz);
   dau2.Boost(bx, by, bz);
-  // dau1.Print();
-  // dau2.Print();
   return 0;
 }
+
 void Particle::Boost(double bx, double by, double bz) {
 
   double energy = GetEnergy();

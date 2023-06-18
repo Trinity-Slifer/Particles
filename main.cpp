@@ -8,11 +8,7 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
-/*
-R__LOAD_LIBRARY(particleType_cpp.so);
-R__LOAD_LIBRARY(resonanceType_cpp.so);
-R__LOAD_LIBRARY(particle_cpp.so);
-*/
+
 int Main() {
   gRandom->SetSeed();
   Particle::AddParticleType("pione+", 0.13957, 1);
@@ -64,9 +60,9 @@ int Main() {
       phi = gRandom->Uniform(0., 2 * M_PI);
       theta = gRandom->Uniform(0., M_PI);
       p = gRandom->Exp(1);
-      px = p * cos(theta) * sin(phi);
+      px = p * cos(phi) * sin(theta);
       py = p * sin(theta) * sin(phi);
-      pz = p * cos(phi);
+      pz = p * cos(theta);
       tp = sqrt(px * px + py * py);
       impulse->Fill(p);
       polar->Fill(phi);
@@ -97,8 +93,14 @@ int Main() {
           k.SetIndex("Kaone+");
         }
         resonance.Decay2body(pi, k);
+        // resonance.Print();
+        // std::cout << resonance.GetEnergy() << std::endl;
+        // pi.Print();
+        // std::cout << pi.GetEnergy() << std::endl;
+        // k.Print();
+        // std::cout << k.GetEnergy() << std::endl;
         invmas = pi.InvMass(k);
-        std::cout << invmas << std::endl;
+        // std::cout << invmas << std::endl;
         new_set.push_back(pi);
         new_set.push_back(k);
         h1->Fill(Particle::FindParticleTest(resonance.GetName()));
